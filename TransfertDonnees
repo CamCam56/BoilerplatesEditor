@@ -1,0 +1,45 @@
+Model:
+	(elements+=Type)*;
+	
+	
+Type:
+	Entity ;
+
+	
+Entity:
+	(condition=BlocCondition | if=BlocConditionIf)? subject=Subject v1=Verb1 (action=Action | blocfin1=BlocFin1 | blocfin2=BlocFin2 | blocfin3=BlocFin3)'.';
+
+
+BlocCondition:
+	(preposition=PrepCondition condition=Condition);
+	
+BlocConditionIf:
+	(preposition=If condition=Condition 'then');
+	
+enum PrepCondition:
+	WHEN = 'When' | WHILE= 'While' | WHERE='Where';
+	
+If:
+	If='If';
+
+Condition :
+	Condition=STRING;
+	
+Subject :
+	'the' SystemName=ID;
+		
+enum Verb1:
+	SHALL = 'shall' | SHOULD = 'should' | WILL = 'will';
+	
+Action:
+	SystemResponse = STRING;
+		
+BlocFin1:
+	'process' Object=ID Details=STRING;
+
+BlocFin2:
+	'provide' Whom=ID 'with' 'the' 'ability' 'to' blocfin1=BlocFin1;
+
+BlocFin3:
+	'be' 'able' 'to' blocfin1=BlocFin1;
+	
