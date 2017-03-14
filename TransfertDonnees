@@ -1,45 +1,20 @@
 Model:
-	(elements+=Type)*;
-	
-	
-Type:
-	Entity ;
+	(elements=Entity)*;
 
-	
 Entity:
-	(condition=BlocCondition | if=BlocConditionIf)? subject=Subject v1=Verb1 (action=Action | blocfin1=BlocFin1 | blocfin2=BlocFin2 | blocfin3=BlocFin3)'.';
-
+	(condition=BlocCondition) 'the' SystemName=ID v1=Verb1 blocfin=BlocFin '.';
 
 BlocCondition:
-	(preposition=PrepCondition condition=Condition);
-	
-BlocConditionIf:
-	(preposition=If condition=Condition 'then');
-	
+	('If' Condition=STRING 'then'|preposition=PrepCondition Condition=STRING)?;
+
 enum PrepCondition:
-	WHEN = 'When' | WHILE= 'While' | WHERE='Where';
-	
-If:
-	If='If';
+	WHEN='When' | WHILE='While' | WHERE='Where';
 
-Condition :
-	Condition=STRING;
-	
-Subject :
-	'the' SystemName=ID;
-		
 enum Verb1:
-	SHALL = 'shall' | SHOULD = 'should' | WILL = 'will';
-	
-Action:
-	SystemResponse = STRING;
+	SHALL='shall' | SHOULD='should' | WILL='will';
+
+BlocFin:
+	(SystemResponse=STRING | 'process' Object=ID Details=STRING | 'provide' Whom=ID 'with' 'the' 'ability' 'to' 'process'
+	Object=ID Details=STRING | 'be' 'able' 'to' 'process' Object=ID Details=STRING);	
+
 		
-BlocFin1:
-	'process' Object=ID Details=STRING;
-
-BlocFin2:
-	'provide' Whom=ID 'with' 'the' 'ability' 'to' blocfin1=BlocFin1;
-
-BlocFin3:
-	'be' 'able' 'to' blocfin1=BlocFin1;
-	
