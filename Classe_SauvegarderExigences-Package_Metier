@@ -1,0 +1,202 @@
+package Metier;
+
+import java.awt.Desktop;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+
+public class SauvegarderExigences {
+
+	public SauvegarderExigences(String nomFichier) throws Exception {
+		ArrayList<String> liste = this.LireEditeur();
+		this.display(liste);
+
+		File fichier = new File(nomFichier);
+
+		if (fichier.exists() == false) {
+			this.CreerNouveauFichier(nomFichier);
+		}
+		for (int i = 0; i < liste.size(); i++) {
+			Enregistrer(null, liste.get(i), nomFichier);
+		}
+		Desktop.getDesktop().open(new File(nomFichier));
+	}
+
+	/**
+	 * Lit le fichier boilerplates.mydsl (=editeur) et renvoie les exigences
+	 * écrites
+	 * 
+	 * @return une liste contenant chaque exigence écrite dans l'éditeur
+	 * @throws Exception
+	 */
+	public ArrayList<String> LireEditeur() throws Exception {
+		String nomEditeur = "src/boilerplates.mydsl";
+		ArrayList<String> exigences = new ArrayList<String>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(nomEditeur));
+			String line;
+			String morceaux[] = null;
+			while ((line = br.readLine()) != null) {
+				morceaux = line.split("\\.");
+				for (int i = 0; i < morceaux.length; i++) {
+					exigences.add(morceaux[i]);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return exigences;
+	}
+
+	/**
+	 * affiche les exigences contenues dans la liste
+	 * 
+	 * @param liste
+	 */
+	public void display(ArrayList<String> liste) {
+		for (String s : liste) {
+			System.out.println(s);
+			System.out.println("++++++++++++++++++");
+		}
+	}
+
+	/**
+	 * Permet d'enregistrer une nouvelle exigence dans un fichier excel choisi
+	 * 
+	 * @throws Exception
+	 */
+	public void Enregistrer(String typeE, String exigence, String nomFichierExcel) throws Exception {
+
+		try {
+			FileInputStream fileIn = new FileInputStream(nomFichierExcel);
+			POIFSFileSystem fs = new POIFSFileSystem(fileIn);
+			HSSFWorkbook wb = new HSSFWorkbook(fs);
+			HSSFSheet mySheet = wb.getSheetAt(0);
+			int index = 2;
+			while (mySheet.getRow(index) != null) {
+				index = index + 1;
+			}
+
+			CellStyle cs1 = wb.createCellStyle();
+			cs1.setAlignment(HorizontalAlignment.CENTER);
+			Font font = wb.createFont();
+			font.setColor(IndexedColors.GREY_80_PERCENT.getIndex());
+			font.setFontHeightInPoints((short) 13);
+			font.setFontName(HSSFFont.FONT_ARIAL);
+			cs1.setFont(font);
+
+			cs1.setBorderBottom(BorderStyle.THIN);
+			cs1.setBottomBorderColor(IndexedColors.GREY_80_PERCENT.getIndex());
+			cs1.setBorderLeft(BorderStyle.THIN);
+			cs1.setLeftBorderColor(IndexedColors.GREY_80_PERCENT.getIndex());
+			cs1.setBorderRight(BorderStyle.THIN);
+			cs1.setRightBorderColor(IndexedColors.GREY_80_PERCENT.getIndex());
+			cs1.setBorderTop(BorderStyle.THIN);
+			cs1.setTopBorderColor(IndexedColors.GREY_80_PERCENT.getIndex());
+
+			HSSFRow row = mySheet.createRow(index);
+			HSSFCell myCell = row.createCell(0);
+			myCell.setCellValue(index - 1);
+			myCell.setCellStyle(cs1);
+			mySheet.autoSizeColumn(0);
+
+			myCell = row.createCell(1);
+			myCell.setCellValue(typeE);
+			myCell.setCellStyle(cs1);
+			mySheet.autoSizeColumn(1);
+
+			myCell = row.createCell(2);
+			myCell.setCellValue(exigence);
+			myCell.setCellStyle(cs1);
+			mySheet.autoSizeColumn(2);
+
+			FileOutputStream fileOut = new FileOutputStream(nomFichierExcel);
+			wb.write(fileOut);
+			fileOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Creer nouveau fichier excel pour ensuite enregistrer des exigences
+	 * 
+	 * @throws Exception
+	 */
+	public void CreerNouveauFichier(String nomFichier) throws Exception {
+		FileOutputStream fileOut;
+
+		try {
+			fileOut = new FileOutputStream(nomFichier);
+			HSSFWorkbook wb = new HSSFWorkbook();
+			HSSFSheet mySheet = wb.createSheet();
+
+			HSSFRow myRowTitle = null;
+			myRowTitle = mySheet.createRow(0);
+
+			CellStyle cs1 = wb.createCellStyle();
+			cs1.setAlignment(HorizontalAlignment.CENTER);
+
+			Font font = wb.createFont();
+			font.setColor(IndexedColors.WHITE.getIndex());
+			font.setFontHeightInPoints((short) 16);
+			font.setFontName(HSSFFont.FONT_ARIAL);
+			cs1.setFont(font);
+			cs1.setFillForegroundColor(IndexedColors.GREY_80_PERCENT.index);
+			cs1.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+			cs1.setBorderBottom(BorderStyle.THIN);
+			cs1.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+			cs1.setBorderLeft(BorderStyle.THIN);
+			cs1.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+			cs1.setBorderRight(BorderStyle.THIN);
+			cs1.setRightBorderColor(IndexedColors.WHITE.getIndex());
+			cs1.setBorderTop(BorderStyle.THIN);
+			cs1.setTopBorderColor(IndexedColors.WHITE.getIndex());
+
+			HSSFCell myCell = myRowTitle.createCell(0);
+			myCell.setCellValue("Numero");
+			myCell.setCellStyle(cs1);
+			mySheet.autoSizeColumn(0);
+
+			myCell = myRowTitle.createCell(1);
+			myCell.setCellValue("Type exigence");
+			myCell.setCellStyle(cs1);
+			mySheet.autoSizeColumn(1);
+
+			myCell = myRowTitle.createCell(2);
+			myCell.setCellValue("Exigence");
+			myCell.setCellStyle(cs1);
+			mySheet.autoSizeColumn(2);
+
+			wb.write(fileOut);
+			fileOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
