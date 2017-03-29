@@ -8,16 +8,10 @@ Contrainte:
 	('CONTRAINTE:' entity+=EntityC)*;
 
 EntityC:
-	((if=PrepConditionIf condition=Condition 'then' | preposition=PrepCondition condition=Condition)? article=Article
+	(if=PrepConditionIf condition=Condition 'then' | preposition=PrepCondition condition=Condition)? article=Article
 	systemName=SystemName v1=VerbShall (response=SystemResponse | 'process' object=Object details=Details | 'provide'
 	whom=Whom 'with' 'the' 'ability' 'to' 'process' object=Object details=Details | 'be' 'able' 'to' 'process'
-	object=Object details=Details));
-	
-//	 | (article=Article
-//	systemName=SystemName v1=VerbShall (response=SystemResponse | 'process' object=Object details=Details | 'provide'
-//	whom=Whom 'with' 'the' 'ability' 'to' 'process' object=Object details=Details | 'be' 'able' 'to' 'process'
-//	object=Object details=Details) (if=PrepConditionIf condition=Condition 'then' | preposition=PrepCondition
-//	condition=Condition)?) '.';
+	object=Object details=Details) '.';
 
 PrepConditionIf:
 	IF='If';
@@ -57,4 +51,5 @@ TypeLibre:
 
 Verbs:
 	SHALL='shall' | SHOULD='should' | WILL='will';
+	
 	
