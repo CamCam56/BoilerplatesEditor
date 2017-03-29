@@ -1,20 +1,60 @@
 Model:
-	(elements=Entity)*;
+	contrainte=TypeContrainte | libre=TypeLibre;
 
-Entity:
-	(condition=BlocCondition) 'the' SystemName=ID v1=Verb1 blocfin=BlocFin '.';
+TypeContrainte:
+	contrainte=Contrainte;
 
-BlocCondition:
-	('If' Condition=STRING 'then'|preposition=PrepCondition Condition=STRING)?;
+Contrainte:
+	('CONTRAINTE:' entity+=EntityC)*;
+
+EntityC:
+	((if=PrepConditionIf condition=Condition 'then' | preposition=PrepCondition condition=Condition)? article=Article
+	systemName=SystemName v1=VerbShall (response=SystemResponse | 'process' object=Object details=Details | 'provide'
+	whom=Whom 'with' 'the' 'ability' 'to' 'process' object=Object details=Details | 'be' 'able' 'to' 'process'
+	object=Object details=Details));
+	
+//	 | (article=Article
+//	systemName=SystemName v1=VerbShall (response=SystemResponse | 'process' object=Object details=Details | 'provide'
+//	whom=Whom 'with' 'the' 'ability' 'to' 'process' object=Object details=Details | 'be' 'able' 'to' 'process'
+//	object=Object details=Details) (if=PrepConditionIf condition=Condition 'then' | preposition=PrepCondition
+//	condition=Condition)?) '.';
+
+PrepConditionIf:
+	IF='If';
+
+Condition:
+	condition=STRING;
+
+SystemName:
+	systemName=ID;
+
+enum Article:
+	theMAJ='The' | theMIN='the';
 
 enum PrepCondition:
 	WHEN='When' | WHILE='While' | WHERE='Where';
 
-enum Verb1:
+VerbShall:
+	SHALL='shall';
+
+SystemResponse:
+	response=STRING;
+
+Object:
+	object=ID;
+
+Details:
+	details=STRING;
+
+Whom:
+	whom=ID;
+
+Libre:
+	libre='LIBRE:';
+
+TypeLibre:
+	libre=Libre;
+
+Verbs:
 	SHALL='shall' | SHOULD='should' | WILL='will';
-
-BlocFin:
-	(SystemResponse=STRING | 'process' Object=ID Details=STRING | 'provide' Whom=ID 'with' 'the' 'ability' 'to' 'process'
-	Object=ID Details=STRING | 'be' 'able' 'to' 'process' Object=ID Details=STRING);	
-
-		
+	
