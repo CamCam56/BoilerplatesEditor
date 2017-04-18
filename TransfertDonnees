@@ -1,11 +1,10 @@
+
+
 Model:
-	contrainte=TypeContrainte | libre=TypeLibre;
+	(contrainte=TypeContrainte | libre=TypeLibre)*;
 
 TypeContrainte:
-	contrainte=Contrainte;
-
-Contrainte:
-	('CONTRAINTE:' entity+=EntityC)*;
+	(type='CONTRAINTE_EXIGENCE:' entity=EntityC)|(type='CONTRAINTE_BOILERPLATE:' entity=EntityC);
 
 EntityC:
 	(if=PrepConditionIf condition=Condition 'then' | preposition=PrepCondition condition=Condition)? article=Article
@@ -43,13 +42,20 @@ Details:
 Whom:
 	whom=ID;
 
-Libre:
-	libre='LIBRE:';
-
 TypeLibre:
-	libre=Libre;
+	(type='LIBRE_EXIGENCE:' entity+=EntityL)|(type='LIBRE_BOILERPLATE:' entity+=EntityL);
 
-Verbs:
-	SHALL='shall' | SHOULD='should' | WILL='will';
+EntityL:
+	prepositions=Prepositions | verb1=Verbs1 | verb2=Verbs2 | subject=Subject | details=Details | '.';
+
+Subject:
+	subject=ID;
+
+enum Prepositions:
+	If='if' | When='when' | Where='where' | While='while' | Then='then' | The='the';
+
+enum Verbs1:
+	Shall='shall' | Should='should' | Will='will' | Obliged ="is obliged to" | Intend ="intends to do" | Must ='must' | Allow ='allows';
 	
-	
+	enum Verbs2 :
+	Provide = "provides with the ability to" | Process = 'processes' | Able = "is able to" ;	
