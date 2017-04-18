@@ -1,5 +1,3 @@
-
-
 Model:
 	(contrainte=TypeContrainte | libre=TypeLibre)*;
 
@@ -43,10 +41,10 @@ Whom:
 	whom=ID;
 
 TypeLibre:
-	(type='LIBRE_EXIGENCE:' entity+=EntityL)|(type='LIBRE_BOILERPLATE:' entity+=EntityL);
+	(type='LIBRE_EXIGENCE:' (entity=EntityL)+)|(type='LIBRE_BOILERPLATE:' (entity=EntityL)+);
 
 EntityL:
-	prepositions=Prepositions | verb1=Verbs1 | verb2=Verbs2 | subject=Subject | details=Details | '.';
+	 prepositions=Prepositions | verb1=Verbs1 | verb2=Verbs2 | subject=Subject | details=Details | '.';
 
 Subject:
 	subject=ID;
@@ -58,4 +56,4 @@ enum Verbs1:
 	Shall='shall' | Should='should' | Will='will' | Obliged ="is obliged to" | Intend ="intends to do" | Must ='must' | Allow ='allows';
 	
 	enum Verbs2 :
-	Provide = "provides with the ability to" | Process = 'processes' | Able = "is able to" ;	
+	Provide = "provides with the ability to" | Process = 'processes' | Able = "is able to" ;
