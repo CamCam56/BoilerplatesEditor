@@ -34,6 +34,17 @@ def protected doCreateProposal(String proposal, StyledString displayString, Imag
 		}
 		
 		
+	for (ID : VerbShall) {
+			if (proposal.equals(ID)) {
+
+				val s = new Styled;
+				return super.doCreateProposal(ID, s.append(ID + " - verbShall"),
+					new Image(Display::^default,
+						"C:\\Users\\daclin\\workspace\\org.xtext.requirement.temporal.ui\\icons\\term.png"), priority,
+					context)
+			}
+		}	
+		
  	for (String str : PrepCondition) {
 			if (proposal.equals(str)) {
 
