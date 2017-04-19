@@ -4,18 +4,15 @@
 package org.xtext.example.mydsl1.ui.contentassist
 
 
-import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal
-import org.eclipse.emf.edit.provider.StyledString
+import org.eclipse.jface.viewers.StyledString
 import org.eclipse.swt.graphics.Image
-import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 import org.eclipse.swt.widgets.Display
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
  * on how to customize the content assistant.
  */
-  
-
 class MyDslProposalProvider extends AbstractMyDslProposalProvider {
 	
 	val PrepCondition = #["when", "while", "where","then", "the"]
@@ -26,14 +23,8 @@ class MyDslProposalProvider extends AbstractMyDslProposalProvider {
 	
 	
 	
-def protected doCreateProposal(String proposal, StyledString displayString, Image image, int priority,
+override protected doCreateProposal(String proposal, StyledString displayString, Image image, int priority,
 		ContentAssistContext context) {
- 	
- 	
- 	
- 	
- 	
- 	
  	
  	for (String str : PrepCondition) {
 			if (proposal.equals(str)) {
@@ -43,19 +34,16 @@ def protected doCreateProposal(String proposal, StyledString displayString, Imag
 					new Image(Display::^default,
 						"C:\\Users\\daclin\\workspace\\org.xtext.requirement.temporal.ui\\icons\\term.png"), priority,
 					context)//chemin de l'image à changer
-					
 					}
 			}
 			
 			for (String str : Verbs1) {
 			if (proposal.equals(str)) {
-
 				val s = new StyledString();
 				return super.doCreateProposal(str, s.append(str + " - Verbs1 is used to describe the degree of the requirement"),
 					new Image(Display::^default,
 						"C:\\Users\\daclin\\workspace\\org.xtext.requirement.temporal.ui\\icons\\term.png"), priority,
 					context)//chemin de l'image à changer
-					
 					}
 			}
 			
@@ -126,4 +114,4 @@ def protected doCreateProposal(String proposal, StyledString displayString, Imag
 //			ContentAssistContext contentAssistContext) {
 //		return new DefaultProposalCreator(contentAssistContext, ruleName, getQualifiedNameConverter());
 //	}
-//}
+/}
