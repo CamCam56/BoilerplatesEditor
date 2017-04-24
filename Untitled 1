@@ -1,0 +1,20 @@
+model:
+	(elements+=entity)*;
+
+entity:
+	(condition=BlocCondition) 'the' SystemName=ID v1=Verb1 blocfin=BlocFin '.';
+
+BlocCondition:
+	('If' Condition=ID 'then'|preposition=PrepCondition Condition=ID)?;
+
+PrepCondition:
+	WHEN='When' | WHILE='While' | WHERE='Where';
+
+Verb1:
+	SHALL='shall' | SHOULD='should' | WILL='will';
+
+BlocFin:
+	(SystemResponse=ID | 'process' Object=ID Details=ID | 'provide' Whom=ID 'with' 'the' 'ability' 'to' 'process'
+	Object=ID Details=ID | 'be' 'able' 'to' 'process' Object=ID Details=ID);	
+
+		
