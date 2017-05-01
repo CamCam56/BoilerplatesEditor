@@ -20,7 +20,7 @@ class MyDslProposalProvider extends AbstractMyDslProposalProvider {
 	val Verbs1 = #['shall', 'should', 'will', "is obliged to", "intends to do",'must','allows']
 	val Verbs2 = #["provides with the ability to",'processes',"is able to"]
 	val TypeLibre = #["LIBRE_EXIGENCE:",'LIBRE_BOILERPLATE:']
-	
+	val PrepConditionIf = #["If"]
 	
 	
 override protected doCreateProposal(String proposal, StyledString displayString, Image image, int priority,
@@ -114,4 +114,4 @@ override protected doCreateProposal(String proposal, StyledString displayString,
 //			ContentAssistContext contentAssistContext) {
 //		return new DefaultProposalCreator(contentAssistContext, ruleName, getQualifiedNameConverter());
 //	}
-/}
+//}
